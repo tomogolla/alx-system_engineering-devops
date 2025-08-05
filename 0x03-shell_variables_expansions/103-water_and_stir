@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+import os
+
+# Define custom digit sets
+base_water = "water"         # base 5
+base_stir = "stir."          # base 4
+base_bestchol = "bestchol"   # base 8
+
+def from_custom_base(s, base_chars):
+    """Convert a string in custom base to integer."""
+    base = len(base_chars)
+    value = 0
+    for char in s:
+        value = value * base + base_chars.index(char)
+    return value
+
+def to_custom_base(n, base_chars):
+    """Convert an integer to a string in custom base."""
+    if n == 0:
+        return base_chars[0]
+    base = len(base_chars)
+    result = ""
+    while n > 0:
+        result = base_chars[n % base] + result
+        n //= base
+    return result
+
+# Read environment variables
+water_str = os.getenv("WATER", "")
+stir_str = os.getenv("STIR", "")
+
+# Convert to base 10
+water_dec = from_custom_base(water_str, base_water)
+stir_dec = from_custom_base(stir_str, base_stir)
+
+# Sum them
+total = water_dec + stir_dec
+
+# Convert to base bestchol
+result = to_custom_base(total, base_bestchol)
+
+# Print result
+print(result)
